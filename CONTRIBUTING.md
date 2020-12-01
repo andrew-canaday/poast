@@ -1,3 +1,11 @@
+# NOTICE
+> <h1>WARNING</h1><br />
+> This project is essentially _scratch work_.
+>
+> PR's/Issues won't be accepted until at least version `0.1.0`.
+
+------------
+
 Contributing
 ============
 
