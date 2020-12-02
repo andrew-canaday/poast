@@ -2,7 +2,7 @@
 """
 
 from .basecli import OpenApiClient
-from .basecfg import ClientConfig
+from .basecfg import ClientConfig  # noqa: F401
 from .genops import get_op_cls
 
 
@@ -54,7 +54,8 @@ def _get_cls_docs(spec):
     ]
 
     # If the API has a description, let's add it!
-    if spec["info"]["description"] is not None and str(spec["info"]["description"]):
+    if spec["info"]["description"] is not None and str(
+            spec["info"]["description"]):
         cls_docs.append('\nAPI Description:')
         cls_docs.append(str(spec["info"]["description"]))
 

@@ -1,7 +1,7 @@
 """
 This module defines all of the concrete OpenApi 3.0 document objects.
 
-.. note:: All of the object types here are defined in the 
+.. note:: All of the object types here are defined in the
     `OpenAPI 3.0.3 specification <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md>`_
 """
 
@@ -9,9 +9,9 @@ import re
 import string
 
 from .model.exceptions import (
-        MalformedDocumentException,
-        InvalidFieldValueException,
-        )
+    MalformedDocumentException,
+    InvalidFieldValueException,
+)
 
 from .util import load_yaml
 
@@ -179,8 +179,8 @@ class ComponentsObject(OpenApiBaseObject):
     def _validate_key(self, field_val, key):
         if not self.KEY_CONSTRAINT.match(key):
             raise InvalidFieldValueException(
-                    self, field_val,
-                    f'keys must match: "{self.KEY_REGEX}"; got: "{key}"')
+                self, field_val,
+                f'keys must match: "{self.KEY_REGEX}"; got: "{key}"')
 
 
 class PathsObject(OpenApiMap):
@@ -203,8 +203,8 @@ class PathsObject(OpenApiMap):
 
             if path_key in paths:
                 other_path = self[paths[path_key]]
-                raise MalformedDocumentException(self, uri_path,
-                        f'conflicts with "{other_path.doc_path}"')
+                raise MalformedDocumentException(
+                    self, uri_path, f'conflicts with "{other_path.doc_path}"')
             else:
                 paths[path_key] = uri_path
 
@@ -231,10 +231,11 @@ class PathsObject(OpenApiMap):
             if op_id is None:
                 continue
 
-            other_op = op_ids.get(op_id,None)
+            other_op = op_ids.get(op_id, None)
             if other_op is not None:
-                raise MalformedDocumentException(self[uri_path],op_id,
-                        f'conflicts with {other_op.doc_path}')
+                raise MalformedDocumentException(
+                    self[uri_path],
+                    op_id, f'conflicts with {other_op.doc_path}')
             else:
                 op_ids[op_id] = op_obj
         return
@@ -294,11 +295,11 @@ class OperationObject(OpenApiBaseObject):
             param_in = str(param['in'])
             param_key = f'{param_name} in {param_in}'
 
-            other_param = unique_params.get(param_key,None)
+            other_param = unique_params.get(param_key, None)
             if other_param is not None:
                 raise MalformedDocumentException(
-                        param, param_key,
-                        f'is a duplicate of {other_param.doc_path}')
+                    param, param_key,
+                    f'is a duplicate of {other_param.doc_path}')
             else:
                 unique_params[param_key] = param
         return
@@ -383,7 +384,10 @@ class ParameterObject(OpenApiBaseObject):
     @required('name')
     @required('in')
     @in_range('in', ['path', 'query', 'header', 'cookie'])
-    @in_range('style', ['matrix', 'label', 'form', 'simple', 'spaceDelimited', 'pipeDelimited', 'deepObject'])
+    @in_range(
+        'style',
+        ['matrix', 'label', 'form', 'simple', 'spaceDelimited', 'pipeDelimited',
+         'deepObject'])
     def _validate(self):
         param_in = self['in']
         if param_in == 'path':
@@ -391,7 +395,8 @@ class ParameterObject(OpenApiBaseObject):
 
         # If "content" is defined, there can only be a single entry in the map:
         if self['content'] is not None and len(self['content']) != 1:
-            raise InvalidFieldValueException(self, 'content', "Length must be 1")
+            raise InvalidFieldValueException(
+                self, 'content', "Length must be 1")
 
 
 class RequestBodyObject(OpenApiBaseObject):
@@ -599,16 +604,18 @@ class SchemaObject(OpenApiBaseObject):
 
     def _validate(self):
         # Only readOnly or writeOnly can be true:
-        if self['readOnly'] == True:
+        if self['readOnly']:
             require_value(self, 'writeOnly', False)
-        elif self['writeOnly'] == True:
+        elif self['writeOnly']:
             require_value(self, 'readOnly', False)
 
         # Discriminator only valid for oneOf, anyOf, allOf:
         if self['discriminator']:
-            if (('oneOf' not in self) and ('anyOf' not in self) and ('allOf' not in self)):
-                raise MalformedDocumentException(self, 'discriminator',
-                        'only valid when using "oneOf", "anyOf", or "allOf"')
+            if (('oneOf' not in self) and ('anyOf' not in self)
+                    and ('allOf' not in self)):
+                raise MalformedDocumentException(
+                    self, 'discriminator',
+                    'only valid when using "oneOf", "anyOf", or "allOf"')
 
 
 class DiscriminatorObject(OpenApiBaseObject):

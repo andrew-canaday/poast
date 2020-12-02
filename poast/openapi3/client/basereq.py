@@ -3,6 +3,7 @@ Base request wrapper class for poast OpenApi 3.0 clients.
 """
 from weakref import proxy
 
+
 class RequestExecutor:
     """
     Class that wraps a :class:`requests.Request` and :class:`requests.Session`
@@ -39,4 +40,3 @@ class RequestExecutor:
             **kwargs: Keyword arguments passed to :func:`requests.Session.send`
         """
         return self._session.send(self._request, **kwargs)
-

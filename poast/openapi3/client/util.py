@@ -55,5 +55,6 @@ def sanitize_fmt_string(fmt_string, reserved=None, prefix='', suffix='_'):
     return ''.join(parts)
 
 
-def client_sanitize(f, x): return f(
-    x, reserved=CLIENT_RESERVED_KWARGS, suffix=CLIENT_PARAM_SUFFIX)
+def client_sanitize(f, x):
+    return f(
+        x, reserved=CLIENT_RESERVED_KWARGS, suffix=CLIENT_PARAM_SUFFIX)

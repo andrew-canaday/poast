@@ -8,6 +8,7 @@ For more info, see:
 from abc import abstractmethod
 from .entity import OpenApiEntity
 
+
 class OpenApiBaseObject(OpenApiEntity, dict):
     """
     Base class for OpenAPI specification objects.
@@ -23,7 +24,7 @@ class OpenApiBaseObject(OpenApiEntity, dict):
         If a value is missing from the spec, return the default, as defined
         by the standard, if possible.
         """
-        return self._defaults.get(key,None)
+        return self._defaults.get(key, None)
 
     @classmethod
     @abstractmethod

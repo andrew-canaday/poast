@@ -5,12 +5,12 @@ from poast.openapi3.client import gen_client_cls
 from requests_futures.sessions import FuturesSession
 
 # Use swagger.io's petstore example, by default:
-PETSTORE_SPEC='https://petstore3.swagger.io/api/v3/openapi.json'
-PETSTORE_ROOT='https://petstore3.swagger.io/api/v3'
+PETSTORE_SPEC = 'https://petstore3.swagger.io/api/v3/openapi.json'
+PETSTORE_ROOT = 'https://petstore3.swagger.io/api/v3'
 
 # Allow the user to override the spec/root url's:
-SPEC_SOURCE=os.environ.get('OPENAPI_SPEC', PETSTORE_SPEC)
-API_ROOT_URL=os.environ.get('API_ROOT_URL', PETSTORE_ROOT)
+SPEC_SOURCE = os.environ.get('OPENAPI_SPEC', PETSTORE_SPEC)
+API_ROOT_URL = os.environ.get('API_ROOT_URL', PETSTORE_ROOT)
 
 if __name__ == '__main__':
     """
@@ -39,4 +39,3 @@ if __name__ == '__main__':
     # Wait for both requests to come back and print 'em:
     print(f'Inventory:\n{inventory.json()}')
     print(f'Pet #2:\n{pet2.json()}')
-

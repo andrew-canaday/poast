@@ -1,8 +1,8 @@
 """
 Dynamically generate OpenAPI 3.0 operation request wrappers.
 """
-from weakref import proxy
 from .basereq import RequestExecutor
+
 
 def get_op_request_cls(cls_name, op_id, verb, uri_path, op_item):
     """

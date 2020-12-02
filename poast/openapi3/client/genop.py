@@ -29,9 +29,10 @@ def get_op_method(cls_name, op_id, verb, uri_path, op_item):
         request_uri = path_template.format(**path_params)
 
         # Prepare the request:
-        r = self._client._request_cls(verb.upper(), request_uri,
-                                      headers=headers, params=params, cookies=cookies,
-                                      data=data, json=json, files=files, hooks=hooks)
+        r = self._client._request_cls(
+            verb.upper(),
+            request_uri, headers=headers, params=params, cookies=cookies,
+            data=data, json=json, files=files, hooks=hooks)
         pr = self._client._session.prepare_request(r)
 
         if op_item['security']:
@@ -76,7 +77,8 @@ def _get_op_docs(verb, uri_path, op_item):
         #       keyword arguments to <Client>.<operationId>(...):
         if param_in == 'path':
             param_name = sanitize_identifier(
-                param_name, reserved=CLIENT_RESERVED_KWARGS, suffix=CLIENT_PARAM_SUFFIX)
+                param_name, reserved=CLIENT_RESERVED_KWARGS,
+                suffix=CLIENT_PARAM_SUFFIX)
         param_docs[param_in].append(f'  {param_name}:')
 
         for field_name in ('description',):

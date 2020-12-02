@@ -4,8 +4,8 @@ from poast.openapi3.spec import OpenApiObject
 from poast.openapi3.client import gen_client_cls
 from requests_oauthlib import OAuth1Session
 
-TWITTER_SPEC='https://api.twitter.com/labs/2/openapi.json'
-TWITTER_ROOT='https://developer.twitter.com/'
+TWITTER_SPEC = 'https://api.twitter.com/labs/2/openapi.json'
+TWITTER_ROOT = 'https://developer.twitter.com/'
 
 if __name__ == '__main__':
     """
@@ -20,11 +20,10 @@ if __name__ == '__main__':
 
     # Instantiate a client:
     twitter_session = OAuth1Session(
-            os.environ.get('CLIENT_KEY'),
-            client_secret=os.environ.get('CLIENT_SECRET'),
-            resource_owner_key=os.environ.get('RESOURCE_OWNER_KEY'),
-            resource_owner_secret=os.environ.get('RESOURCE_OWNER_SECRET'))
+        os.environ.get('CLIENT_KEY'),
+        client_secret=os.environ.get('CLIENT_SECRET'),
+        resource_owner_key=os.environ.get('RESOURCE_OWNER_KEY'),
+        resource_owner_secret=os.environ.get('RESOURCE_OWNER_SECRET'))
 
     client = ApiClient(TWITTER_ROOT, session=twitter_session)
     help(client.op)
-

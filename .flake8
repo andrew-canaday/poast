@@ -1,0 +1,14 @@
+[pep8]
+in-place = True
+recursive = 1
+max-line-length = 80
+exit-code = True
+
+
+[flake8]
+max-line-length = 80
+ignore: E501,W503,W504
+exclude = 
+	__pycache__
+	.venv
+	.git

@@ -12,12 +12,21 @@ from .spec import (
 @click.version_option()
 @click.option('--openapi-spec', type=click.Path(), envvar='OPENAPI_SPEC',
               default=None, help='Path to app OpenAPI Spec')
-@click.option('--validate/--no-validate', default=True, help="Validate the loaded document")
-@click.option('--resolve-refs/--no-resolve-refs', default=False, help="Resolve document references")
-@click.option('--show-unset/--no-show-unset', default=False, help="Show unset fields")
-@click.option('--show-paths/--no-show-paths', default=False, help="Show document paths")
-@click.option('--show-attrs/--no-show-attrs', default=False, help="Show document attributes")
-def main(openapi_spec, validate, resolve_refs, show_unset, show_paths, show_attrs):
+@click.option('--validate/--no-validate', default=True,
+              help="Validate the loaded document")
+@click.option(
+    '--resolve-refs/--no-resolve-refs', default=False,
+    help="Resolve document references")
+@click.option('--show-unset/--no-show-unset', default=False,
+              help="Show unset fields")
+@click.option('--show-paths/--no-show-paths', default=False,
+              help="Show document paths")
+@click.option(
+    '--show-attrs/--no-show-attrs', default=False,
+    help="Show document attributes")
+def main(
+    openapi_spec, validate, resolve_refs, show_unset, show_paths,
+        show_attrs):
     """Test OpenAPI Parser"""
 
     if openapi_spec is not None:

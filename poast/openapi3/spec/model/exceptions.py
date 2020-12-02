@@ -15,6 +15,7 @@ class MalformedDocumentException(DocumentParsingException):
     """
     Exception type thrown on malformed OpenAPI 3.0 data.
     """
+
     def __init__(self, doc_obj, field_name, msg):
         self.doc_obj = doc_obj
         self.field_name = field_name

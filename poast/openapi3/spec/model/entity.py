@@ -96,4 +96,3 @@ class OpenApiEntity(ABC):
         for x in super().__dir__():
             if not x.startswith('_'):
                 yield x
-

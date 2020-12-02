@@ -2,7 +2,6 @@
 Base class for poast OpenApi 3.0 clients.
 """
 
-import requests
 import logging
 import copy
 
@@ -30,7 +29,7 @@ class OpenApiClient:
         '_request_cls',
         '_headers',
         '_cookies',
-        #'auth',
+        # 'auth',
     )
 
     def __init__(self, root_url="", config=None, session=None):

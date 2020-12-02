@@ -17,11 +17,11 @@
 # relative to the documentation root, use os.path.abspath to make it
 # absolute, like shown here.
 #
+import poast.openapi3
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
-import poast.openapi3
 
 # -- General configuration ---------------------------------------------
 
@@ -89,38 +89,38 @@ todo_emit_warnings = False
 autodoc_member_order = 'groupwise'
 
 # Diagram stuff:
-graphviz_output_format='svg'
+graphviz_output_format = 'svg'
 inheritance_alias = {
-        'poast.openapi3.spec.model.baseobj.OpenApiBaseObject': 'OpenApiBaseObject',
-        'poast.openapi3.spec.model.containers.OpenApiContainer': 'OpenApiContainer',
-        'poast.openapi3.spec.model.containers.OpenApiList': 'OpenApiList',
-        'poast.openapi3.spec.model.containers.OpenApiMap': 'OpenApiMap',
-        'poast.openapi3.spec.model.entity.OpenApiEntity': 'OpenApiEntity',
-        'poast.openapi3.spec.model.exceptions.DocumentParsingException': 'DocumentParsingException',
-        'poast.openapi3.spec.model.exceptions.MalformedDocumentException': 'MalformedDocumentException',
-        'poast.openapi3.spec.model.exceptions.InvalidFieldValueException': 'InvalidFieldValueException',
-        'poast.openapi3.spec.model.exceptions.MissingRequiredFieldException': 'MissingRequiredFieldException',
-        'poast.openapi3.spec.model.field.OpenApiDataSpec': 'OpenApiDataSpec',
-        'poast.openapi3.spec.model.field.OpenApiFieldSpec': 'OpenApiFieldSpec',
-        'poast.openapi3.spec.model.field.OpenApiFieldUnion': 'OpenApiFieldUnion',
-        'poast.openapi3.spec.model.primitives.OpenApiPrimitive': 'OpenApiPrimitive',
-        'poast.openapi3.spec.model.primitives.OpenApiInteger': 'OpenApiInteger',
-        'poast.openapi3.spec.model.primitives.OpenApiNumber': 'OpenApiNumber',
-        'poast.openapi3.spec.model.primitives.OpenApiString': 'OpenApiString',
-        'poast.openapi3.spec.model.primitives.OpenApiBoolean': 'OpenApiBoolean',
-        'poast.openapi3.spec.model.primitives.OpenApiAny': 'OpenApiAny',
-        'poast.openapi3.spec.model.reference.ReferenceObject': 'ReferenceObject',
-    }
+    'poast.openapi3.spec.model.baseobj.OpenApiBaseObject': 'OpenApiBaseObject',
+    'poast.openapi3.spec.model.containers.OpenApiContainer': 'OpenApiContainer',
+    'poast.openapi3.spec.model.containers.OpenApiList': 'OpenApiList',
+    'poast.openapi3.spec.model.containers.OpenApiMap': 'OpenApiMap',
+    'poast.openapi3.spec.model.entity.OpenApiEntity': 'OpenApiEntity',
+    'poast.openapi3.spec.model.exceptions.DocumentParsingException': 'DocumentParsingException',
+    'poast.openapi3.spec.model.exceptions.MalformedDocumentException': 'MalformedDocumentException',
+    'poast.openapi3.spec.model.exceptions.InvalidFieldValueException': 'InvalidFieldValueException',
+    'poast.openapi3.spec.model.exceptions.MissingRequiredFieldException': 'MissingRequiredFieldException',
+    'poast.openapi3.spec.model.field.OpenApiDataSpec': 'OpenApiDataSpec',
+    'poast.openapi3.spec.model.field.OpenApiFieldSpec': 'OpenApiFieldSpec',
+    'poast.openapi3.spec.model.field.OpenApiFieldUnion': 'OpenApiFieldUnion',
+    'poast.openapi3.spec.model.primitives.OpenApiPrimitive': 'OpenApiPrimitive',
+    'poast.openapi3.spec.model.primitives.OpenApiInteger': 'OpenApiInteger',
+    'poast.openapi3.spec.model.primitives.OpenApiNumber': 'OpenApiNumber',
+    'poast.openapi3.spec.model.primitives.OpenApiString': 'OpenApiString',
+    'poast.openapi3.spec.model.primitives.OpenApiBoolean': 'OpenApiBoolean',
+    'poast.openapi3.spec.model.primitives.OpenApiAny': 'OpenApiAny',
+    'poast.openapi3.spec.model.reference.ReferenceObject': 'ReferenceObject',
+}
 inheritance_graph_attrs = dict(
-        rankdir="LR",
-        size='"6.0, 8.0"',
-        fontsize=24,
-        ratio='compress',
-        )
+    rankdir="LR",
+    size='"6.0, 8.0"',
+    fontsize=24,
+    ratio='compress',
+)
 inheritance_node_attrs = dict(
-        fontsize=24,
-        height=0.75,
-        )
+    fontsize=24,
+    height=0.75,
+)
 
 # -- Options for HTML output -------------------------------------------
 
@@ -139,9 +139,9 @@ html_theme_options = {
     "show_powered_by": False,
     "github_user": "andrew-canaday",
     "github_repo": "poast",
-    #"github_banner": True,
+    # "github_banner": True,
     "github_banner": False,
-    #"show_related": False,
+    # "show_related": False,
     "show_related": True,
     "note_bg": "#FFF59C",
 }
@@ -215,7 +215,6 @@ texinfo_documents = [
      'OpenAPI 3.0 parser/validator + client generator.',
      'OpenAPI'),
 ]
-
 
 
 intersphinx_mapping = {
