@@ -1,7 +1,7 @@
 <img align="right" height="100" width="100" valign="middle" src="./docs/img/poast-logo-100.png">
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE.md)
-[![Build Status](https://travis-ci.org/andrew-canaday/poast.svg?branch=main)](https://travis-ci.org/andrew-canaday/poast)
+[![Build Status](https://travis-ci.com/andrew-canaday/poast.svg?branch=main)](https://travis-ci.com/andrew-canaday/poast)
 [![Read the Docs](https://readthedocs.org/projects/poast/badge/?version=latest)](https://poast.readthedocs.io)
 
 Poast
