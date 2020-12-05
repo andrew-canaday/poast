@@ -29,7 +29,7 @@ class ClientConfig:
     )
 
     def __init__(self, logger=None, session_cls=None, request_cls=None,
-                 headers=None, cookies=None):
+                 headers: dict = None, cookies: dict = None):
         """
         Utility class to package up client configuration for re-use
         across multiple clients.
@@ -57,7 +57,7 @@ class ClientConfig:
             self.cookies = copy.copy(cookies)
         return
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value):
         """
         Prevent anything but logger from being set to None.
         """

@@ -1,13 +1,13 @@
 """
-Base class for poast OpenAPI 3.0 endpoint operations.
+Poast OpTable.
 """
 
 from weakref import proxy
 
 
-class OpenApiOperations:
+class OpTable:
     """
-    Base class for all dynamically generated operations.
+    API Operations Table.
     """
 
     __slots__ = (
@@ -15,9 +15,15 @@ class OpenApiOperations:
         '_client',
     )
 
-    def __init__(self, client):
+    def __init__(self, client, operations=None):
         """
         Create an instance of the operation.
         """
+        if operations is None:
+            operations = tuple()
+
+        # for op in operations:
+        #     self._add_operation(op)
+
         self._client = proxy(client)
         return

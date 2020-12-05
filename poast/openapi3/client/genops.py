@@ -8,7 +8,7 @@ from .util import (
     sanitize_fmt_string,
 )
 from .genop import get_op_method
-from .baseop import OpenApiOperations
+from .optable import OpTable
 
 
 def _get_path_ops(cls_name, uri_path, path_item):
@@ -47,4 +47,4 @@ def get_op_cls(cli_cls_name, spec):
         for op_id, op_fn in _get_path_ops(cls_name, str(p), spec['paths'][p]):
             cls_ns[op_id] = op_fn
 
-    return type(cls_name, (OpenApiOperations,), cls_ns)
+    return type(cls_name, (OpTable,), cls_ns)

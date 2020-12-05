@@ -5,7 +5,7 @@ Base class for poast OpenApi 3.0 clients.
 import logging
 import copy
 
-from .basecfg import ClientConfig
+from .config import ClientConfig
 
 
 class OpenApiClient:
@@ -13,9 +13,9 @@ class OpenApiClient:
     Base class for all dynamically generated clients.
 
     Attributes:
-        op (poast.openapi3.client.baseop.OpenApiOperations): OpenAPI operations object
+        op (poast.openapi3.client.optable.OpTable): OpenAPI operations object
         root_url (str): the root URL to which operation URI paths are appended.
-        config (poast.openapi3.client.basecfg.ClientConfig): optional client configuration.
+        config (poast.openapi3.client.config.ClientConfig): optional client configuration.
             (If absent, the default configuration is used)
         session (requests.Session): optional Session object to use for this client.
             (If absent, the session class in ``config`` is used)
@@ -32,13 +32,13 @@ class OpenApiClient:
         # 'auth',
     )
 
-    def __init__(self, root_url="", config=None, session=None):
+    def __init__(self, root_url: str = "", config: ClientConfig = None, session=None):
         """
         Create an instance of the API client.
 
         Args:
             root_url (str): the root URL to which operation URI paths are appended.
-            config (poast.openapi3.client.basecfg.ClientConfig): optional client configuration.
+            config (poast.openapi3.client.config.ClientConfig): optional client configuration.
                 (If absent, the default configuration is used)
             session (requests.Session): optional Session object to use for this client.
                 (If absent, the session class in ``config`` is used)
