@@ -51,8 +51,12 @@ class ReferenceObject(OpenApiEntity):
             return self.__obj
 
     def value(self, show_unset=False):
-        # TODO: account for cyclical references...
-        return self.target().value()
+        target = self.target()
+        if isinstance(target, OpenApiEntity):
+            # TODO: detect cycles!!!
+            return self.target().value()
+        else:
+            return target
 
 
 def openapi_is_ref(data):
