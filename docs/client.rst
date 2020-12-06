@@ -13,7 +13,7 @@ OpenApiClient
 
 ClientConfig
 ^^^^^^^^^^^^
-.. autoclass:: poast.openapi3.client.basecfg.ClientConfig
+.. autoclass:: poast.openapi3.client.config.ClientConfig
     :members:
     :special-members:
     :no-undoc-members:
@@ -22,7 +22,7 @@ ClientConfig
 
 OpenApiOperations
 ^^^^^^^^^^^^^^^^^
-.. autoclass:: poast.openapi3.client.baseop.OpenApiOperations
+.. autoclass:: poast.openapi3.client.optable.OpTable
     :members:
     :no-undoc-members:
     :show-inheritance:
@@ -30,7 +30,7 @@ OpenApiOperations
 
 RequestExecutor
 ^^^^^^^^^^^^^^^
-.. autoclass:: poast.openapi3.client.basereq.RequestExecutor
+.. autoclass:: poast.openapi3.client.executor.RequestExecutor
     :members:
     :special-members:
     :no-undoc-members:

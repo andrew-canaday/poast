@@ -6,7 +6,7 @@ Prepared Requests
 
 API operations on :class:`~poast.openpi3.client.baseop.OpenApiOperations`
 objects return standard :class:`requests.PreparedRequest` object, patched to
-include an ``execute()`` method (an instance of :class:`~poast.openapi3.client.basereq.RequestExecutor`).
+include an ``execute()`` method (an instance of :class:`~poast.openapi3.client.executor.RequestExecutor`).
 
 This allows the client opportunity to make last minute modifications to a
 request before it is sent, e.g.::
@@ -22,7 +22,7 @@ request before it is sent, e.g.::
 Client Configuration
 --------------------
 
-.. seealso:: :class:`poast.openapi3.client.basecfg.ClientConfig`.
+.. seealso:: :class:`poast.openapi3.client.config.ClientConfig`.
 
 
 Custom Sessions
