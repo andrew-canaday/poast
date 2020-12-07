@@ -32,8 +32,7 @@ def required(field_name):
     """
     def _wrap_func(func):
         def _wrap_self(self):
-            if self[field_name] is None:
-                require(self, field_name)
+            require(self, field_name)
             return func(self)
         return _wrap_self
     return _wrap_func
@@ -59,12 +58,14 @@ def is_url(field_name):
     """
     def _wrap_func(func):
         def _wrap_self(self):
-            if self[field_name] is not None and not validators.url(
-                    str(self[field_name])):
-                return
-                # TODO: handle relative URL's:
-                raise InvalidFieldValueException(
-                    self, field_name, 'string value must be a valid url')
+            if self[field_name] is not None:
+                test_url = str(self[field_name])
+                # HACK HACK HACK for valid URL's:
+                if test_url.startswith('/'):
+                    test_url = f'http://fake-host.net{test_url}'
+                if not validators.url(test_url):
+                    raise InvalidFieldValueException(
+                        self, field_name, 'string value must be a valid url')
             return func(self)
         return _wrap_self
     return _wrap_func

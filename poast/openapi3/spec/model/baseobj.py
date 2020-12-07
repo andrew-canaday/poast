@@ -14,7 +14,7 @@ class OpenApiBaseObject(OpenApiEntity, dict):
     Base class for OpenAPI specification objects.
     """
 
-    def __init__(self, data, doc_path=None):
+    def __init__(self, data, doc_path='#'):
         self._defaults = {}
         OpenApiEntity.__init__(self, data, doc_path)
         return
