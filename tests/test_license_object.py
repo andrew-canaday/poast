@@ -11,18 +11,18 @@ def test_license():
 
     # Confirm absolute and relative URL's:
     for license_url in ('https://someplace.tld', '/some-path/license.txt'):
-        c = LicenseObject({
+        l = LicenseObject({
             'name': license_name,
             'url': license_url,
         }).validate()
-        assert c['name'] == license_name
-        assert c['url'] == license_url
+        assert l['name'] == license_name
+        assert l['url'] == license_url
 
 
 def test_license_missing_name():
     license_url = 'https://someplace.tld'
     with pytest.raises(MissingRequiredFieldException):
-        c = LicenseObject({
+        LicenseObject({
             'url': license_url,
         }).validate()
 
@@ -30,7 +30,8 @@ def test_license_missing_name():
 def test_license_invalid_url():
     license_url = 'someplace.tld'
     with pytest.raises(InvalidFieldValueException):
-        c = LicenseObject({
+        LicenseObject({
             'name': 'Apache 2.0',
             'url': license_url,
         }).validate()
+

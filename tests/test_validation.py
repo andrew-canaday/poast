@@ -1,8 +1,6 @@
 import pytest
 from poast.openapi3.spec.model.exceptions import (
     DocumentParsingException,
-    MalformedDocumentException,
-    InvalidFieldValueException,
     MissingRequiredFieldException,
 )
 

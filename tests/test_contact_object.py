@@ -19,7 +19,7 @@ def test_contact():
 
 def test_contact_invalid_email():
     with pytest.raises(InvalidFieldValueException):
-        c = ContactObject({
+        ContactObject({
             'name': 'Some name',
             'email': 'invalid email address',
         }).validate()
