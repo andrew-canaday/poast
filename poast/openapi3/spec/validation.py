@@ -22,7 +22,7 @@ def require_value(doc_obj, field_name, required_val):
     if field_val and field_val != required_val:
         raise InvalidFieldValueException(
             doc_obj, field_name,
-            f'expected: {json.dumps(required_val)}; got: {json.dumps(doc_obj[field_name].value())}')
+            f'expected: {json.dumps(required_val)}; got: {json.dumps(doc_obj[field_name])}')
     return
 
 
