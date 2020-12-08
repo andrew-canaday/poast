@@ -6,7 +6,7 @@ parser and client library for Python.
 
 .. danger::
 
-   This project is still in **alpha**. *Interfaces are subject to change.*
+   This project is still in **alpha**.
 
 .. toctree::
    :maxdepth: 3
@@ -16,6 +16,7 @@ parser and client library for Python.
    advanced
    client
    spec
+   Source <https://github.com/andrew-canaday/poast>
    coming
    history
    maintainer

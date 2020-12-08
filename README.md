@@ -11,7 +11,6 @@ Poast is an [OpenAPI 3.0](https://github.com/OAI/OpenAPI-Specification/blob/mast
 parser/validator and runtime client generator.
 
 > :warning: **WARNING**: _This package is still in **alpha**_.
-> (It doesn't even have unit tests yet, folks).
 
 
 Features
