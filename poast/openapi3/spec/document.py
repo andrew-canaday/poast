@@ -66,6 +66,7 @@ class InfoObject(OpenApiBaseObject):
     @required('title')
     @required('version')
     def _validate(self):
+        """Validation is 3.0.3 compliant"""
         pass
 
 
@@ -84,6 +85,7 @@ class ContactObject(OpenApiBaseObject):
     @is_url('url')
     @is_email('email')
     def _validate(self):
+        """Validation is 3.0.3 compliant"""
         pass
 
 
@@ -101,6 +103,7 @@ class LicenseObject(OpenApiBaseObject):
     @required('name')
     @is_url('url')
     def _validate(self):
+        """Validation is 3.0.3 compliant"""
         pass
 
 
@@ -120,6 +123,7 @@ class ServerObject(OpenApiBaseObject):
     @required('url')
     @is_url('url')
     def _validate(self):
+        """Validation is 3.0.3 compliant"""
         pass
 
 
@@ -138,6 +142,7 @@ class ServerVariableObject(OpenApiBaseObject):
 
     @required('default')
     def _validate(self):
+        """Validation is 3.0.3 compliant"""
         pass
 
 
@@ -165,6 +170,7 @@ class ComponentsObject(OpenApiBaseObject):
         )
 
     def _validate(self):
+        """Validation is 3.0.3 compliant"""
         # Keys for each of the nested dictionaries must match the regex:
         # "^[a-zA-Z0-9\.\-_]+$"
         for field_name in self._field_names():
@@ -192,6 +198,7 @@ class PathsObject(OpenApiMap):
         super().__init__(data, doc_path, PathItemObject)
 
     def _validate(self):
+        """Validation is 3.0.3 compliant"""
         # 1. All operationIds defined by the API must be unique.
         # 2. No two paths can have the same general form, even if the parameter
         #    names are different, e.g.: "/pets/{id}" and "/pets/{petId}" are
@@ -199,6 +206,10 @@ class PathsObject(OpenApiMap):
         paths = {}
         op_ids = {}
         for uri_path in self:
+            if not uri_path.startswith('/'):
+                raise MalformedDocumentException(self, uri_path,
+                        "Paths must begin with '/'")
+
             path_key = self._get_validation_path_key(uri_path)
 
             if path_key in paths:
@@ -241,9 +252,11 @@ class PathsObject(OpenApiMap):
         return
 
 
+# Validation is 3.0.3 compliant (i.e. no validation required)
 class PathItemObject(OpenApiBaseObject):
     """
     .. seealso:: `PathItemObject <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#pathItemObject>`_
+
     """
     @classmethod
     def _obj_spec(cls):
@@ -275,7 +288,6 @@ class OperationObject(OpenApiBaseObject):
             _field("summary", OpenApiString),
             _field("description", OpenApiString),
             _field("externalDocs", ExternalDocumentationObject),
-            # TODO: operationId MUST be unique among all paths in API spec.
             _field("operationId", OpenApiString),
             _field("parameters", OpenApiList.of(ParameterObject), []),
             _field("requestBody", RequestBodyObject),
@@ -289,6 +301,7 @@ class OperationObject(OpenApiBaseObject):
 
     @required('responses')
     def _validate(self):
+        """Validation is 3.0.3 compliant"""
         unique_params = {}
         for param in self['parameters']:
             param_name = str(param['name'])
@@ -319,6 +332,7 @@ class ExternalDocumentationObject(OpenApiBaseObject):
     @required('url')
     @is_url('url')
     def _validate(self):
+        """Validation is 3.0.3 compliant"""
         pass
 
 
@@ -340,18 +354,15 @@ class ParameterObject(OpenApiBaseObject):
             _field("description", OpenApiString),
             _field("required", OpenApiBoolean, False),
             _field("deprecated", OpenApiBoolean, False),
-            _field("allowEmptyValue",
-                   OpenApiBoolean, False),
+            _field("allowEmptyValue", OpenApiBoolean, False),
 
             # Parameter serialization:
             _field("style", OpenApiString),
             _field("explode", OpenApiBoolean, True),
-            _field(
-                "allowReserved", OpenApiBoolean, False),
+            _field("allowReserved", OpenApiBoolean, False),
             _union(
                 _field("schema", SchemaObject),
-                _field(
-                    "content", OpenApiMap.of(MediaTypeObject)),
+                _field("content", OpenApiMap.of(MediaTypeObject)),
             ),
             _union(
                 _field("example", OpenApiAny),
@@ -384,11 +395,16 @@ class ParameterObject(OpenApiBaseObject):
     @required('name')
     @required('in')
     @in_range('in', ['path', 'query', 'header', 'cookie'])
-    @in_range(
-        'style',
+    @in_range('style',
         ['matrix', 'label', 'form', 'simple', 'spaceDelimited', 'pipeDelimited',
          'deepObject'])
     def _validate(self):
+        """
+        Compliant with 3.0.3, save for Style Values.
+
+        Todo:
+            - `Style Values <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#style-values>`_
+        """
         param_in = self['in']
         if param_in == 'path':
             require_value(self, 'required', True)
@@ -411,6 +427,11 @@ class RequestBodyObject(OpenApiBaseObject):
             _field("required", OpenApiBoolean, False),
         )
 
+    @required('content')
+    def _validate(self):
+        """Validation is 3.0.3 compliant"""
+        pass
+
 
 class MediaTypeObject(OpenApiBaseObject):
     """
@@ -427,6 +448,15 @@ class MediaTypeObject(OpenApiBaseObject):
             _field("encoding", OpenApiMap.of(EncodingObject)),
         )
 
+    def _validate(self):
+        """
+        Todo:
+            - Keys in encoding must map to parameters in schema.
+            - Encoding SHALL only apply when the media type is ``multipart``
+              or ``application/x-www-form-url-encoded``
+        """
+        pass
+
 
 class EncodingObject(OpenApiBaseObject):
     @classmethod
@@ -440,16 +470,28 @@ class EncodingObject(OpenApiBaseObject):
                 "allowReserved", OpenApiBoolean, False),
         )
 
+    def _validate(self):
+        """
+        Todo: validation
+        """
+        pass
+
+
 
 class ResponsesObject(OpenApiMap):
     """
     .. seealso:: `ResponsesObject <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#responsesObject>`_
-
-    TODO: validate keys in map
     """
 
     def __init__(self, data, doc_path):
         super().__init__(data, doc_path, ResponseObject)
+
+    def _validate(self):
+        """
+        Todo:
+            - validate keys in map
+        """
+        pass
 
 
 class ResponseObject(OpenApiBaseObject):
@@ -467,12 +509,16 @@ class ResponseObject(OpenApiBaseObject):
 
     @required('description')
     def _validate(self):
+        """Validation is 3.0.3 compliant"""
         pass
 
 
 class CallbackObject(OpenApiMap):
     """
     .. seealso:: `CallbackObject <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#callbackObject>`_
+
+    Todo:
+        - Expression-language parsing.
     """
 
     def __init__(self, data, doc_path):
@@ -498,12 +544,17 @@ class ExampleObject(OpenApiBaseObject):
 class LinkObject(OpenApiBaseObject):
     """
     .. seealso:: `LinkObject <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#linkObject>`_
+
+    Todo:
+        - [{in}].{name} parameter key parsing
     """
     @classmethod
     def _obj_spec(self):
         return (
-            _field("operationRef", OpenApiString),
-            _field("operationId", OpenApiString),
+            _union(
+                _field("operationRef", OpenApiString),
+                _field("operationId", OpenApiString),
+            ),
             _field("parameters", OpenApiMap.of(OpenApiAny)),
             _field("requestBody", OpenApiAny),
             _field("description", OpenApiString),
@@ -511,22 +562,17 @@ class LinkObject(OpenApiBaseObject):
         )
 
 
-class HeaderObject(OpenApiBaseObject):
+class HeaderObject(ParameterObject):
     """
-    .. seealso::
-     - `HeaderObject <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#headerObject>`_
+    .. seealso:: `HeaderObject <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#headerObject>`_
+    """
 
-    TODO: context-dependent default values
-    TODO: content, styles, serialization
-    """
-    @classmethod
-    def _obj_spec(cls):
-        return (
-            _field("description", OpenApiString),
-            _field("required", OpenApiBoolean),
-            _field("deprecated", OpenApiBoolean),
-            _field("allowEmptyValue", OpenApiBoolean),
-        )
+    def _validate(self):
+        """
+        Todo:
+            - Same as Parameter object, but 'name' and 'in' MUST not be defined.
+        """
+
 
 
 class TagObject(OpenApiBaseObject):
@@ -540,6 +586,11 @@ class TagObject(OpenApiBaseObject):
             _field("description", OpenApiString),
             _field("externalDocs", ExternalDocumentationObject),
         )
+
+    @required('name')
+    def _validate(self):
+        """Validation is 3.0.3 compliant"""
+        pass
 
 
 class SchemaObject(OpenApiBaseObject):
@@ -631,6 +682,10 @@ class DiscriminatorObject(OpenApiBaseObject):
 
     @required('propertyName')
     def _validate(self):
+        """
+        Todo:
+            - Ensure match between field and one of defined responses.
+        """
         pass
 
 
@@ -648,6 +703,10 @@ class XMLObject(OpenApiBaseObject):
             _field("attribute", OpenApiBoolean, False),
             _field("wrapped", OpenApiBoolean, False),
         )
+
+    @is_url('namespace', require_abs=True)
+    def _validate(self):
+        pass
 
 
 class SecuritySchemeObject(OpenApiBaseObject):
@@ -671,6 +730,7 @@ class SecuritySchemeObject(OpenApiBaseObject):
     @is_url('openIdConnectUrl')
     @in_range('type', ["apiKey", "http", "oauth2", "bearer", "openIdConnect"])
     def _validate(self):
+        """Validation is 3.0.3 compliant"""
         auth_type = self['type']
 
         if auth_type == 'apiKey':
@@ -733,6 +793,14 @@ class SecurityRequirementObject(OpenApiMap):
         super().__init__(data, doc_path, OpenApiString)
         return
 
+    def _validate(self):
+        """
+        Todo:
+            - Validate scopes for oauth2 or openIdConnect
+            - Validate empty otherwise
+        """
+        pass
+
 
 class OpenApiObject(OpenApiBaseObject):
     """
@@ -776,8 +844,11 @@ class OpenApiObject(OpenApiBaseObject):
             self.accept(self.__resolve_ref)
         return
 
+    @required('openapi')
+    @required('info')
     @required('paths')
     def _validate(self):
+        """TODO"""
         pass
 
     def __add_obj_by_path(self, child):

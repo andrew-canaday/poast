@@ -6,7 +6,7 @@ See also:
 """
 
 from .entity import OpenApiEntity
-
+from .exceptions import DocumentParsingException
 
 class OpenApiPrimitive(OpenApiEntity):
     """
@@ -59,6 +59,12 @@ class OpenApiPrimitive(OpenApiEntity):
         encapsulated data.
         """
         return self._value
+
+    def validate(self):
+        if not isinstance(self._value,self._value_type):
+            raise DocumentParsingException(
+                    'Error at {}: expected {}; got {}'.format(
+                        self.doc_path, self._value_type, type(self._value)))
 
     def __hash__(self):
         return hash(self._value)
@@ -115,23 +121,23 @@ class OpenApiPrimitive(OpenApiEntity):
 
 
 class OpenApiInteger(OpenApiPrimitive):
-    pass
+    _value_type = int
 
 
 class OpenApiNumber(OpenApiPrimitive):
-    pass
+    _value_type = float
 
 
 class OpenApiString(OpenApiPrimitive):
-    pass
+    _value_type = str
 
 
 class OpenApiBoolean(OpenApiPrimitive):
-    pass
+    _value_type = bool
 
 
 class OpenApiAny(OpenApiPrimitive):
     """
     Utility class to wrap ANY type of field value.
     """
-    pass
+    _value_type = object

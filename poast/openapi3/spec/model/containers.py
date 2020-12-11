@@ -13,6 +13,8 @@ from .reference import openapi_obj_or_ref
 class OpenApiContainer(OpenApiEntity):
     def __init__(self, data, doc_path, item_type):
         self._item_type = item_type
+        # TODO: just initialize to default empty container?
+        # super().__init__(data or self._item_type(), doc_path)
         super().__init__(data, doc_path)
         return
 

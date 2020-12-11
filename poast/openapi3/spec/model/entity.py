@@ -28,6 +28,7 @@ class OpenApiEntity(ABC):
                     self.doc_path, e))
         return
 
+    @abstractmethod
     def validate(self):
         """
         Validate the data in this object against the spec.
@@ -65,6 +66,11 @@ class OpenApiEntity(ABC):
 
         Args:
             visitor (func): a function that takes a single OpenApiEntity as an argument.
+
+        Todo:
+            - Is this really the pattern to use?
+            - If so: wrap the function in an object that captures state to
+              avoid cycles, etc.
         """
         return visitor(self)
 
