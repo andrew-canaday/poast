@@ -2,7 +2,9 @@
 .DEFAULT_GOAL := help
 
 help:
-	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+	@grep '^\w\{1,\}:' $(MAKEFILE_LIST) \
+		| sed 's/^\([a-z]\{1,\}\).*:.*## *\(.*\)/\1:\t\2/g' \
+		| awk '{$$1 = sprintf("%-16s", $$1)} 1'
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
