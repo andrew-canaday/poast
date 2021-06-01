@@ -7,7 +7,7 @@ For more information, see:
 
 from .entity import OpenApiEntity
 from .exceptions import MalformedDocumentException
-from ..validation import require
+
 
 # TODO: This should subclass OpenApiBaseObject...
 class ReferenceObject(OpenApiEntity):
@@ -28,16 +28,7 @@ class ReferenceObject(OpenApiEntity):
         return self.__ref
 
     def _resolve_ref(self, api_entity):
-        """TODO: watch for recursion!"""
         self.__obj = api_entity
-
-    def validate(self):
-        """TODO: watch for recursion!"""
-        require(self.__data, '$ref')
-        openapi_is_ref(self.__data)
-
-        if self.__obj is not None:
-            self.__obj.validate()
 
     def accept(self, visitor):
         if self.__obj is not None:
@@ -76,7 +67,7 @@ def openapi_is_ref(data):
         ref_path = data.get("$ref")
         if ref_path:
             if len(data) != 1:
-                raise MalformedDocumentException(self, '$ref',
+                raise MalformedDocumentException(
                     "ReferenceObjects cannot have more than one key")
             return True
     return False

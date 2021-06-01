@@ -32,8 +32,6 @@ class OpenApiBaseObject(OpenApiEntity, dict):
         """
         Subclasses MUST override to provide a list of specifications for the
         fields in the object.
-
-        TODO: why not use decorators!?
         """
         pass
 

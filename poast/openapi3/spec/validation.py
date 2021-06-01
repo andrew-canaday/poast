@@ -38,24 +38,21 @@ def required(field_name):
     return _wrap_func
 
 
-def require_range(self, field_name, valid):
-    if self[field_name] is not None and self[field_name] not in valid:
-        raise InvalidFieldValueException(
-            self, field_name, f'{field_name} must be one of {valid}')
-
 def in_range(field_name, valid):
     """
     Decorator used to ensure that a field has a value from a set range.
     """
     def _wrap_func(func):
         def _wrap_self(self):
-            require_range(self, field_name, valid)
+            if self[field_name] is not None and self[field_name] not in valid:
+                raise InvalidFieldValueException(
+                    self, field_name, f'{field_name} must be one of {valid}')
             return func(self)
         return _wrap_self
     return _wrap_func
 
 
-def is_url(field_name, require_abs=False):
+def is_url(field_name):
     """
     Require that a given field is a url, if present.
     """
@@ -64,7 +61,7 @@ def is_url(field_name, require_abs=False):
             if self[field_name] is not None:
                 test_url = str(self[field_name])
                 # HACK HACK HACK for valid URL's:
-                if (not require_abs) and test_url.startswith('/'):
+                if test_url.startswith('/'):
                     test_url = f'http://fake-host.net{test_url}'
                 if not validators.url(test_url):
                     raise InvalidFieldValueException(
