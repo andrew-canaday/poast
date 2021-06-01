@@ -1,31 +1,76 @@
 .PHONY: clean clean-test clean-pyc clean-build docs help
 .DEFAULT_GOAL := help
 
-help:
-	@grep '^\w\{1,\}:' $(MAKEFILE_LIST) \
-		| sed 's/^\([a-z]\{1,\}\).*:.*## *\(.*\)/\1:\t\2/g' \
-		| awk '{$$1 = sprintf("%-16s", $$1)} 1'
+# Hack to get the directory this makefile is in:
+MKFILE_PATH := $(lastword $(MAKEFILE_LIST))
+MKFILE_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
+MKFILE_ABSDIR := $(abspath $(MKFILE_DIR))
+
+# Detect runtime:
+ifdef TRAVIS
+IS_RUNTIME_TRAVIS := true
+else
+IS_RUNTIME_TRAVIS := false
+endif # TRAVIS
+
+IS_RUNTIME_DOCKER := $(shell \
+	if [ -f '/.dockerenv' -o -f '/proc/self/cgroup/docker' ]; then \
+		echo "true"; \
+	else \
+		echo "false"; \
+	fi )
+
+#-------------------------------------------------------------------------------
+# REQUIRE A VENV:
+#
+# In order to check for the venv on every invocation of make, we include a file
+# that doesn't exist, with a target declared as PHONY (above), and then have
+# the target used to create it check for the VIRTUAL_ENV env var. If undefined
+# use the in-built $(error ...) function to exit make with a descriptive error.
+-include ensure_venv
+ensure_venv: # Ensure a virtual environment is active
+ifndef VIRTUAL_ENV
+ifeq ($(IS_RUNTIME_TRAVIS),true)
+	# Virtual env not required for travis builds:
+	@echo "Drone build detected ($(TRAVIS))"
+else
+ifeq ($(IS_RUNTIME_DOCKER),true)
+	@echo "Docker build detected"
+else
+	$(error 'No virtual env detected! See README.md for init instructions')
+endif # DOCKER
+endif # TRAVIS
+endif # VIRTUAL_ENV
+#-------------------------------------------------------------------------------
+help_spacing := 14
+help: ## Print this makefile help menu
+	@echo 'Targets:'
+	@grep '^[a-z_\-]\{1,\}:.*##' $(MAKEFILE_LIST) \
+		| sed 's/^\([a-z_\-]\{1,\}\): *\(.*[^ ]\) *## *\(.*\)/\1:\t\3 (\2)/g' \
+		| sed 's/^\([a-z_\-]\{1,\}\): *## *\(.*\)/\1:\t\2/g' \
+		| awk '{$$1 = sprintf("%-$(help_spacing)s", $$1)} 1' \
+		| sed 's/^/  /'
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
 clean-build: ## remove build artifacts
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
+	rm -rf build/
+	rm -rf dist/
+	rm -rf .eggs/
+	find . -name '*.egg-info' -exec rm -rf {} +
+	find . -name '*.egg' -exec rm -rf {} +
 
 clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
+	find . -name '__pycache__' -exec rm -rf {} +
 
 clean-test: ## remove test and coverage artifacts
-	rm -fr .tox/
+	rm -rf .tox/
 	rm -f .coverage
-	rm -fr htmlcov/
-	rm -fr .pytest_cache
+	rm -rf htmlcov/
+	rm -rf .pytest_cache
 
 lint: ## check style with flake8
 	flake8 poast tests
